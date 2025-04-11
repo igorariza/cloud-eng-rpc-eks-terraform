@@ -2,17 +2,17 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      java: corretto11
     commands:
-      - echo Installing Docker...
+      - echo "Installing dependencies (if any)..."
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 147997139534.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo Build started on `date`
-      - docker build -t my-app .
+      - echo "Building Docker image..."
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/my-app:latest .
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo "Build completed successfully."
