@@ -17,3 +17,8 @@ variable "security_groups" {
   description = "Security groups for the load balancer"
   type        = list(string)
 }
+
+variable "node_role_arn" {
+  description = "ARN of the IAM role for the EKS nodes"
+  type        = string
+}

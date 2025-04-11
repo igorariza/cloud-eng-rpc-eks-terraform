@@ -5,18 +5,22 @@ module "eks" {
   cluster_name    = var.cluster_name
   cluster_version = "1.24"
   vpc_id          = var.vpc_id
-  # subnets attribute removed as it is not valid here
-
-  # Configuración básica del clúster
-  #manage_aws_auth = true
+  subnet_ids      = var.subnets
 }
 
-module "eks_node_groups" {
-  source  = "terraform-aws-modules/eks/aws//modules/node_groups"
-  version = "18.0.0"
+resource "aws_eks_node_group" "eks_nodes" {
+  cluster_name    = module.eks.cluster_name
+  node_group_name = "eks_nodes"
+  node_role_arn   = var.node_role_arn
+  subnet_ids      = var.subnets
 
-  cluster_name = module.eks.cluster_name
-  cluster_version = "1.24"
+  scaling_config {
+    desired_size = 2
+    max_size     = 3
+    min_size     = 1
+  }
+
+  instance_types = ["t3.medium"]
 }
 
 resource "aws_lb" "app_lb" {
@@ -42,12 +46,4 @@ resource "aws_lb_listener" "http" {
       status_code  = "200"
     }
   }
-}
-
-output "eks_cluster_name" {
-  value = module.eks.cluster_name
-}
-
-output "load_balancer_dns" {
-  value = aws_lb.app_lb.dns_name
 }
