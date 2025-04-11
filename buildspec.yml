@@ -10,9 +10,11 @@ phases:
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 147997139534.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo "Building Docker image..."
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/my-app:latest .
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+      - echo "Building Docker images for account and transaction services..."
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/account-service:latest ./account-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/transaction-service:latest ./transaction-service
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/account-service:latest
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/transaction-service:latest
   post_build:
     commands:
-      - echo "Build completed successfully."
+      - echo "Build and push completed successfully for both services."
