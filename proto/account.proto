@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package account.v1alpha1;
+option go_package = "account/v1alpha1";
+
+message Account {
+  string id = 1;
+  string name = 2;
+  float balance = 3;
+  string create_at = 4;
+  string update_at = 5;
+}
+
+service AccountAPIService {
+  rpc ValidateIfExistAccountName(ValidateIfExistAccountNameRequest) returns (ValidateIfExistAccountNameResponse);
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc GetAccountBalance(GetAccountBalanceRequest) returns (GetAccountBalanceResponse);
+}
+
+message ValidateIfExistAccountNameRequest {
+  string name = 1;
+}
+
+message ValidateIfExistAccountNameResponse {
+  bool exists = 1;
+}
+
+message CreateAccountRequest {
+  string name = 1;
+  float balance = 2;
+}
+
+message CreateAccountResponse {
+  string id = 1;
+}
+
+message GetAccountBalanceRequest {
+  string id = 1;
+}
+
+message GetAccountBalanceResponse {
+  string id = 1;
+  float balance = 2;
+}
