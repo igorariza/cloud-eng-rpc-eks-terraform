@@ -11,10 +11,10 @@ phases:
   build:
     commands:
       - echo "Building Docker images for account and transaction services..."
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/account-service:latest ./account-service
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/transaction-service:latest ./transaction-service
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/account-service:latest
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/transaction-service:latest
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:latest ./account-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:latest ./transaction-service
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:latest
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:latest
   post_build:
     commands:
       - echo "Build and push completed successfully for both services."
