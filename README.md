@@ -101,7 +101,7 @@ kubectl get pods
 ### port-forwarding services
 - To access the services locally, you can use port forwarding:
 ```bash
-kubectl port-forward service/account-service 50001:50001
+kubectl port-forward service/banking-service 50001:50001
 kubectl port-forward service/transaction-service 50002:50002
 ```
 - Access the services in your browser:
