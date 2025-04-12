@@ -11,8 +11,8 @@ phases:
   build:
     commands:
       - echo "🐳 Building Docker images for account and transaction services..."
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:latest ./account-service
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:latest ./transaction-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.1 ./account-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.1 ./transaction-service
       - echo "📤 Pushing Docker images to Amazon ECR..."
       - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.1
       - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.1
