@@ -1,6 +1,5 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), './proto'))
 from concurrent import futures
 import grpc
 import transaction_pb2
