@@ -3,11 +3,9 @@ FROM python:3.9-slim
 WORKDIR /app
 COPY . /app
 COPY requirements.txt /app/requirements.txt
-COPY ../proto /app/proto
-
-RUN python -m grpc_tools.protoc -I./protos --python_out=. --grpc_python_out=. ./protos/*.proto
-
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=./proto ./proto/*.proto
 
 CMD ["python", "client.py"]
