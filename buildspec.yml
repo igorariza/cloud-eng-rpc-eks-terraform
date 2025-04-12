@@ -21,10 +21,8 @@ phases:
   post_build:
     commands:
       - echo "Build and push completed successfully for both services."
-  post_build:
-  commands:
-    - echo "Deploying to EKS..."
-    - aws eks update-kubeconfig --region us-east-1 --name cloud-eng-rpc-eks-terraform
-    - kubectl apply -f ./account-service/k8s
-    - kubectl apply -f ./transaction-service/k8s
-    - echo "kubernetes resources applied successfully."
+      - echo "Deploying to EKS..."
+      - aws eks update-kubeconfig --region us-east-1 --name cloud-eng-rpc-eks-terraform
+      - kubectl apply -f ./account-service/k8s
+      - kubectl apply -f ./transaction-service/k8s
+      - echo "kubernetes resources applied successfully."
