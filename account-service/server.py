@@ -43,8 +43,8 @@ class AccountAPIService(account_pb2_grpc.AccountAPIServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     account_pb2_grpc.add_AccountAPIServiceServicer_to_server(AccountAPIService(), server)
-    server.add_insecure_port('[::]:50056')
-    print("Account Server running on port 50056")
+    server.add_insecure_port('[::]:50051')
+    print("Account Server running on port 50051")
     server.start()
     server.wait_for_termination()
 
