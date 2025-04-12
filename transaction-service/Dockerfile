@@ -6,6 +6,6 @@ COPY requirements.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=./proto ./proto/*.proto
+RUN python -m grpc_tools.protoc -I./proto --python_out=./proto --grpc_python_out=./proto ./proto/*.proto
 
 CMD ["python", "client.py"]
