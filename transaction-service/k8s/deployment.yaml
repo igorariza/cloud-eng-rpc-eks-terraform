@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-service-deployment
+  namespace: default
+  labels:
+    app: transaction-service
+    env: default
+spec:
+  selector:
+    matchLabels:
+      app: transaction-service
+  template:
+    metadata:
+      labels:
+        app: transaction-service
+    spec:
+      containers:
+        - name: transaction-service
+          image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50051
+              name: transactionport
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: '0.1'
+            requests:
+              memory: 256Mi
+              cpu: '0.05'
+          envFrom:
+            - secretRef:
+                name: transaction-service-secret
