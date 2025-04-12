@@ -1,7 +1,7 @@
 import grpc
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../proto'))
+sys.path.append(os.path.join(os.path.dirname(__file__), './proto'))
 from concurrent import futures
 from datetime import datetime
 import uuid
