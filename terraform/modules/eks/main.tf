@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
+
 # Security group for EKS control plane
 resource "aws_security_group" "eks_control_plane" {
   name        = "${var.cluster_name}-eks-control-plane-sg"
@@ -54,9 +55,12 @@ module "eks" {
   version = "18.0.0"
 
   cluster_name    = var.cluster_name
-  cluster_version = "1.24"
+  cluster_version = "1.31"
   vpc_id          = var.vpc_id
   subnet_ids      = var.subnets
+  
+
+  # Remove map_users and manage user access via aws-auth ConfigMap
 
   # Pass security groups to the EKS module
   cluster_security_group_id = aws_security_group.eks_control_plane.id
