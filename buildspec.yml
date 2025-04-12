@@ -3,24 +3,24 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Installing dependencies (if any)..."
+      - echo "🔧 Installing dependencies (if any)..."
   pre_build:
     commands:
-      - echo "Logging in to Amazon ECR..."
+      - echo "🔐 Logging in to Amazon ECR..."
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 147997139534.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo "Building Docker images for account and transaction services..."
+      - echo "🐳 Building Docker images for account and transaction services..."
       - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:latest ./account-service
       - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:latest ./transaction-service
-      - echo "Pushing Docker images to Amazon ECR..."
+      - echo "📤 Pushing Docker images to Amazon ECR..."
       - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:latest
       - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:latest
   post_build:
     commands:
-      - echo "Build and push completed successfully for both services."
-      - echo "Deploying to EKS..."
+      - echo "✅ Build and push completed successfully for both services."
+      - echo "🚀 Deploying to EKS..."
       - aws eks update-kubeconfig --region us-east-1 --name cloud-eng-rpc-eks-terraform
       - kubectl apply -f ./account-service/k8s
       - kubectl apply -f ./transaction-service/k8s
-      - echo "kubernetes resources applied successfully."
+      - echo "✅ Kubernetes resources applied successfully."
