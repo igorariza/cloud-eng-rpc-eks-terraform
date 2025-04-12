@@ -105,12 +105,12 @@ kubectl port-forward -n default service/banking-service 50052:50051
 kubectl port-forward -n default service/transaction-service 50053:50051
 ```
 - Access the services in your browser:
-  - Account Service: `http://localhost:50001`
-  - Transaction Service: `http://localhost:50002`
+  - Account Service: `http://localhost:50052`
+  - Transaction Service: `http://locahost:50053`
 
 ### Request Postman rpc
 - You can use Postman to test the services. Import the `postman_collection.json` file located in the `postman` directory to your Postman workspace.
 - The collection contains requests for both the `account-service` and `transaction-service`.
 - Make sure to update the URLs in the Postman collection to match your local port forwarding settings.
-- For example, the `account-service` URL should be `http://localhost:50001/account`.
-- The `transaction-service` URL should be `http://localhost:50002/transaction`.
+- For example, the `account-service` URL should be `http://localhost:50052`.
+- The `transaction-service` URL should be `http://localhost:50053`.
