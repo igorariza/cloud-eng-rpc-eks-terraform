@@ -26,7 +26,7 @@ class AccountAPIService(account_pb2_grpc.AccountAPIServiceServicer):
         return account_pb2.GetAccountBalanceResponse(id=request.id, balance=balance)
 
     def notify_transaction(self, from_account, to_account, amount):
-        with grpc.insecure_channel('127.0.0.1:50057') as channel:
+        with grpc.insecure_channel('transaction-service:50051') as channel:
             stub = transaction_pb2_grpc.TransactionAPIServiceStub(channel)
             try:
                 response = stub.ProcessTransaction(

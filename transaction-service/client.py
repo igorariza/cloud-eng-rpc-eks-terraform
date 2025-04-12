@@ -9,7 +9,7 @@ import account_pb2_grpc
 import uuid
 
 GRPC_SERVER_ADDRESS = '[::]:50051'
-ACCOUNT_SERVICE_ADDRESS = '127.0.0.1:50051'
+ACCOUNT_SERVICE_ADDRESS = 'banking-service:50051'
 
 class TransactionAPIService(transaction_pb2_grpc.TransactionAPIServiceServicer):
     def ProcessTransaction(self, request, context):
