@@ -1,13 +1,14 @@
 from datetime import datetime
 import uuid
 import grpc
-from app.proto import account_pb2, account_pb2_grpc
-from app.client.transaction_client import TransactionAPIService
+import os
+from dotenv import load_dotenv
+from app.proto import account_pb2, account_pb2_grpc, transaction_pb2_grpc, transaction_pb2
+load_dotenv()
 
+TRANSACTION_SERVICE_URI = os.getenv("TRANSACTION_SERVICE_URI", "localhost:50051")
 class AccountAPIService(account_pb2_grpc.AccountAPIServiceServicer):
-    def __init__(self):
-        self.transaction_client = TransactionAPIService()
-
+    
     def ValidateIfExistAccountName(self, request, context):
         exists = request.name == "existing_account"
         return account_pb2.ValidateIfExistAccountNameResponse(exists=exists)
@@ -31,13 +32,25 @@ class AccountAPIService(account_pb2_grpc.AccountAPIServiceServicer):
         balance = 100.0 if request.id == "123" else 0.0
 
         return account_pb2.GetAccountBalanceResponse(id=request.id, balance=10.0)
-
+    
     def GetTransactionHistory(self, request, context):
-        print("Getting transaction history for account ID:", request.id)
-        transactions = [
-            account_pb2.Transaction(id="1", from_account=request.id, to_account="456", amount=100.0, timestamp="2023-10-01T10:00:00Z"),
-            account_pb2.Transaction(id="2", from_account=request.id, to_account="789", amount=50.0, timestamp="2023-10-02T12:00:00Z"),
-        ]
-        print("Transaction history:", "transactions")
-        #self.transaction_client.GetTransactionHistory(request, context)
-        return account_pb2.GetTransactionHistoryResponse(transactions=transactions)
+        with grpc.insecure_channel(TRANSACTION_SERVICE_URI) as channel:
+            stub = transaction_pb2_grpc.TransactionAPIServiceStub(channel)
+            try:
+                response = stub.GetTransactionHistory(
+                    transaction_pb2.GetTransactionHistoryRequest(
+                        id=request.id,
+                    )
+                )
+                print(f"Transaction history for account {request.id}: {response.transactions}")
+                return transaction_pb2.GetTransactionHistoryResponse(
+                    id=request.id,
+                    transactions=response.transactions,
+                )
+            except grpc.RpcError as e:
+                context.set_details(f"gRPC error: {e.details()}")
+                context.set_code(e.code())
+                return transaction_pb2.GetTransactionHistoryResponse(
+                    id=request.id,
+                    transactions=[],
+                )

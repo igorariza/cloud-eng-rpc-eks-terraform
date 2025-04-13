@@ -39,7 +39,7 @@ class TransactionAPIService(transaction_pb2_grpc.TransactionAPIServiceServicer):
                 return transaction_pb2.CreateAccountResponse()
 
     def GetAccountBalance(self, request, context):
-        with grpc.insecure_channel(ACCOUNT_SERVICE_ADDRESS) as channel:
+        with grpc.insecure_channel(ACCOUNT_SERVICE_URI) as channel:
             stub = account_pb2_grpc.AccountAPIServiceStub(channel)
             try:
                 response = stub.GetAccountBalance(
