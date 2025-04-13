@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: banking-service-deployment
-  namespace: default
+  namespace: develop
   labels:
     app: banking-service
-    env: default
+    env: develop
 spec:
   selector:
     matchLabels:
@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
         - name: banking-service
-          image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.5
+          image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.6
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 50051
-              name: transactionport
+              name: accountport
           resources:
             limits:
               memory: 512Mi
