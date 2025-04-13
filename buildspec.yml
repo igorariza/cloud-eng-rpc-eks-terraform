@@ -8,16 +8,16 @@ phases:
     commands:
       - echo "🔐 Logging in to Amazon ECR..."
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 147997139534.dkr.ecr.us-east-1.amazonaws.com
-      - export VERSION=$(date +%Y%m%d%H%M%S)
+      - export VERSION=$(date +%Y%m%d%H%M%S) # Generate a timestamp-based version
       - echo "🔖 Version set to $VERSION"
   build:
     commands:
       - echo "🐳 Building Docker images for account and transaction services..."
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.4 ./account-service
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.4 ./transaction-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:$VERSION ./account-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:$VERSION ./transaction-service
       - echo "📤 Pushing Docker images to Amazon ECR..."
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.4
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.4
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:$VERSION
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:$VERSION
   post_build:
     commands:
       - echo "✅ Build and push completed successfully for both services."
