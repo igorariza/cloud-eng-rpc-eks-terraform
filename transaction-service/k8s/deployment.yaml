@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: transaction-service
-          image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.6
+          image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 50051
