@@ -8,20 +8,23 @@ phases:
     commands:
       - echo "🔐 Logging in to Amazon ECR..."
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 147997139534.dkr.ecr.us-east-1.amazonaws.com
+      - export VERSION=$(date +%Y%m%d%H%M%S)
+      - echo "🔖 Version set to $VERSION"
   build:
     commands:
       - echo "🐳 Building Docker images for account and transaction services..."
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.3 ./account-service
-      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.3 ./transaction-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:$VERSION ./account-service
+      - docker build -t 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:$VERSION ./transaction-service
       - echo "📤 Pushing Docker images to Amazon ECR..."
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:v0.0.3
-      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:v0.0.3
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:$VERSION
+      - docker push 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:$VERSION
   post_build:
     commands:
       - echo "✅ Build and push completed successfully for both services."
-      - echo "🚀 Deploying to EKS..."
-      - aws eks update-kubeconfig --region us-east-1 --name cloud-eng-rpc-eks-terraform
-      - kubectl get nodes
+      - echo "🚀 Updating Kubernetes deployments with new version..."
+      - sed -i "s|image: .*account-service:.*|image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/account-service:$VERSION|g" ./account-service/k8s/deployment.yaml
+      - sed -i "s|image: .*transaction-service:.*|image: 147997139534.dkr.ecr.us-east-1.amazonaws.com/cloud/transaction-service:$VERSION|g" ./transaction-service/k8s/deployment.yaml
+      - echo "🔄 Applying updated Kubernetes manifests..."
       - kubectl apply -f ./account-service/k8s || kubectl describe -f ./account-service/k8s
       - kubectl apply -f ./transaction-service/k8s || kubectl describe -f ./transaction-service/k8s
       - echo "✅ Kubernetes resources applied successfully."

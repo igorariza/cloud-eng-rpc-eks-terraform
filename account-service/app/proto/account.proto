@@ -15,6 +15,7 @@ service AccountAPIService {
   rpc ValidateIfExistAccountName(ValidateIfExistAccountNameRequest) returns (ValidateIfExistAccountNameResponse);
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
   rpc GetAccountBalance(GetAccountBalanceRequest) returns (GetAccountBalanceResponse);
+  rpc GetTransactionHistory(GetTransactionHistoryRequest) returns (GetTransactionHistoryResponse);
 }
 
 message ValidateIfExistAccountNameRequest {
@@ -41,4 +42,18 @@ message GetAccountBalanceRequest {
 message GetAccountBalanceResponse {
   string id = 1;
   float balance = 2;
+}
+
+message GetTransactionHistoryRequest {
+  string account_id = 1;
+}
+message Transaction {
+  string id = 1;
+  string account_id = 2;
+  string type = 3; // "credit" or "debit"
+  float amount = 4;
+  string timestamp = 5;
+}
+message GetTransactionHistoryResponse {
+  repeated Transaction transactions = 1;
 }

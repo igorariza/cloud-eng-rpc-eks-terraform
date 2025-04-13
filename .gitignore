@@ -175,3 +175,8 @@ cython_debug/
 .terraform/
 .terraform.lock.hcl
 terraform/.terraform
+account-service/.env*
+account-service/.env
+account-service/.env.*
+transaction-service/.env*
+transaction-service/.env

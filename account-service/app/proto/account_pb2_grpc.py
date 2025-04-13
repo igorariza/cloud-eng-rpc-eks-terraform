@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import transaction_pb2 as transaction__pb2
+from app.proto import account_pb2 as app_dot_proto_dot_account__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -18,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in transaction_pb2_grpc.py depends on'
+        + f' but the generated code in app/proto/account_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class TransactionAPIServiceStub(object):
+class AccountAPIServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -34,38 +34,32 @@ class TransactionAPIServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.TransferMoney = channel.unary_unary(
-                '/transaction.v1alpha1.TransactionAPIService/TransferMoney',
-                request_serializer=transaction__pb2.TransferMoneyRequest.SerializeToString,
-                response_deserializer=transaction__pb2.TransferMoneyResponse.FromString,
-                _registered_method=True)
-        self.GetTransactionHistory = channel.unary_unary(
-                '/transaction.v1alpha1.TransactionAPIService/GetTransactionHistory',
-                request_serializer=transaction__pb2.GetTransactionHistoryRequest.SerializeToString,
-                response_deserializer=transaction__pb2.GetTransactionHistoryResponse.FromString,
+        self.ValidateIfExistAccountName = channel.unary_unary(
+                '/account.v1alpha1.AccountAPIService/ValidateIfExistAccountName',
+                request_serializer=app_dot_proto_dot_account__pb2.ValidateIfExistAccountNameRequest.SerializeToString,
+                response_deserializer=app_dot_proto_dot_account__pb2.ValidateIfExistAccountNameResponse.FromString,
                 _registered_method=True)
         self.CreateAccount = channel.unary_unary(
-                '/transaction.v1alpha1.TransactionAPIService/CreateAccount',
-                request_serializer=transaction__pb2.CreateAccountRequest.SerializeToString,
-                response_deserializer=transaction__pb2.CreateAccountResponse.FromString,
+                '/account.v1alpha1.AccountAPIService/CreateAccount',
+                request_serializer=app_dot_proto_dot_account__pb2.CreateAccountRequest.SerializeToString,
+                response_deserializer=app_dot_proto_dot_account__pb2.CreateAccountResponse.FromString,
                 _registered_method=True)
-        self.ProcessTransaction = channel.unary_unary(
-                '/transaction.v1alpha1.TransactionAPIService/ProcessTransaction',
-                request_serializer=transaction__pb2.TransactionRequest.SerializeToString,
-                response_deserializer=transaction__pb2.TransactionResponse.FromString,
+        self.GetAccountBalance = channel.unary_unary(
+                '/account.v1alpha1.AccountAPIService/GetAccountBalance',
+                request_serializer=app_dot_proto_dot_account__pb2.GetAccountBalanceRequest.SerializeToString,
+                response_deserializer=app_dot_proto_dot_account__pb2.GetAccountBalanceResponse.FromString,
+                _registered_method=True)
+        self.GetTransactionHistory = channel.unary_unary(
+                '/account.v1alpha1.AccountAPIService/GetTransactionHistory',
+                request_serializer=app_dot_proto_dot_account__pb2.GetTransactionHistoryRequest.SerializeToString,
+                response_deserializer=app_dot_proto_dot_account__pb2.GetTransactionHistoryResponse.FromString,
                 _registered_method=True)
 
 
-class TransactionAPIServiceServicer(object):
+class AccountAPIServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def TransferMoney(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetTransactionHistory(self, request, context):
+    def ValidateIfExistAccountName(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -77,48 +71,54 @@ class TransactionAPIServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ProcessTransaction(self, request, context):
+    def GetAccountBalance(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTransactionHistory(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_TransactionAPIServiceServicer_to_server(servicer, server):
+def add_AccountAPIServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'TransferMoney': grpc.unary_unary_rpc_method_handler(
-                    servicer.TransferMoney,
-                    request_deserializer=transaction__pb2.TransferMoneyRequest.FromString,
-                    response_serializer=transaction__pb2.TransferMoneyResponse.SerializeToString,
-            ),
-            'GetTransactionHistory': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTransactionHistory,
-                    request_deserializer=transaction__pb2.GetTransactionHistoryRequest.FromString,
-                    response_serializer=transaction__pb2.GetTransactionHistoryResponse.SerializeToString,
+            'ValidateIfExistAccountName': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidateIfExistAccountName,
+                    request_deserializer=app_dot_proto_dot_account__pb2.ValidateIfExistAccountNameRequest.FromString,
+                    response_serializer=app_dot_proto_dot_account__pb2.ValidateIfExistAccountNameResponse.SerializeToString,
             ),
             'CreateAccount': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateAccount,
-                    request_deserializer=transaction__pb2.CreateAccountRequest.FromString,
-                    response_serializer=transaction__pb2.CreateAccountResponse.SerializeToString,
+                    request_deserializer=app_dot_proto_dot_account__pb2.CreateAccountRequest.FromString,
+                    response_serializer=app_dot_proto_dot_account__pb2.CreateAccountResponse.SerializeToString,
             ),
-            'ProcessTransaction': grpc.unary_unary_rpc_method_handler(
-                    servicer.ProcessTransaction,
-                    request_deserializer=transaction__pb2.TransactionRequest.FromString,
-                    response_serializer=transaction__pb2.TransactionResponse.SerializeToString,
+            'GetAccountBalance': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAccountBalance,
+                    request_deserializer=app_dot_proto_dot_account__pb2.GetAccountBalanceRequest.FromString,
+                    response_serializer=app_dot_proto_dot_account__pb2.GetAccountBalanceResponse.SerializeToString,
+            ),
+            'GetTransactionHistory': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTransactionHistory,
+                    request_deserializer=app_dot_proto_dot_account__pb2.GetTransactionHistoryRequest.FromString,
+                    response_serializer=app_dot_proto_dot_account__pb2.GetTransactionHistoryResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'transaction.v1alpha1.TransactionAPIService', rpc_method_handlers)
+            'account.v1alpha1.AccountAPIService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('transaction.v1alpha1.TransactionAPIService', rpc_method_handlers)
+    server.add_registered_method_handlers('account.v1alpha1.AccountAPIService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class TransactionAPIService(object):
+class AccountAPIService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def TransferMoney(request,
+    def ValidateIfExistAccountName(request,
             target,
             options=(),
             channel_credentials=None,
@@ -131,36 +131,9 @@ class TransactionAPIService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/transaction.v1alpha1.TransactionAPIService/TransferMoney',
-            transaction__pb2.TransferMoneyRequest.SerializeToString,
-            transaction__pb2.TransferMoneyResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetTransactionHistory(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/transaction.v1alpha1.TransactionAPIService/GetTransactionHistory',
-            transaction__pb2.GetTransactionHistoryRequest.SerializeToString,
-            transaction__pb2.GetTransactionHistoryResponse.FromString,
+            '/account.v1alpha1.AccountAPIService/ValidateIfExistAccountName',
+            app_dot_proto_dot_account__pb2.ValidateIfExistAccountNameRequest.SerializeToString,
+            app_dot_proto_dot_account__pb2.ValidateIfExistAccountNameResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -185,9 +158,9 @@ class TransactionAPIService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/transaction.v1alpha1.TransactionAPIService/CreateAccount',
-            transaction__pb2.CreateAccountRequest.SerializeToString,
-            transaction__pb2.CreateAccountResponse.FromString,
+            '/account.v1alpha1.AccountAPIService/CreateAccount',
+            app_dot_proto_dot_account__pb2.CreateAccountRequest.SerializeToString,
+            app_dot_proto_dot_account__pb2.CreateAccountResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -199,7 +172,7 @@ class TransactionAPIService(object):
             _registered_method=True)
 
     @staticmethod
-    def ProcessTransaction(request,
+    def GetAccountBalance(request,
             target,
             options=(),
             channel_credentials=None,
@@ -212,9 +185,36 @@ class TransactionAPIService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/transaction.v1alpha1.TransactionAPIService/ProcessTransaction',
-            transaction__pb2.TransactionRequest.SerializeToString,
-            transaction__pb2.TransactionResponse.FromString,
+            '/account.v1alpha1.AccountAPIService/GetAccountBalance',
+            app_dot_proto_dot_account__pb2.GetAccountBalanceRequest.SerializeToString,
+            app_dot_proto_dot_account__pb2.GetAccountBalanceResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTransactionHistory(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/account.v1alpha1.AccountAPIService/GetTransactionHistory',
+            app_dot_proto_dot_account__pb2.GetTransactionHistoryRequest.SerializeToString,
+            app_dot_proto_dot_account__pb2.GetTransactionHistoryResponse.FromString,
             options,
             channel_credentials,
             insecure,

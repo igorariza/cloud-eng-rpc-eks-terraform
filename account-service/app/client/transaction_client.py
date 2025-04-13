@@ -4,14 +4,14 @@ from concurrent import futures
 import grpc
 from dotenv import load_dotenv
 
-from proto import account_pb2, account_pb2_grpc 
-from proto import transaction_pb2, transaction_pb2_grpc
+from app.proto import account_pb2, account_pb2_grpc 
+from app.proto import transaction_pb2, transaction_pb2_grpc
 import uuid
 load_dotenv()
 
 
 GRPC_PORT = os.getenv("GRPC_PORT", "50051")
-ACCOUNT_SERVICE_ADDRESS = os.getenv("ACCOUNT_SERVICE_URI", "localhost:50051")
+TRANSACTION_SERVICE_URI = os.getenv("TRANSACTION_SERVICE_URI", "localhost:50051")
 
 class TransactionAPIService(transaction_pb2_grpc.TransactionAPIServiceServicer):
     def ProcessTransaction(self, request, context):
@@ -22,7 +22,7 @@ class TransactionAPIService(transaction_pb2_grpc.TransactionAPIServiceServicer):
         )
 
     def CreateAccount(self, request, context):
-        with grpc.insecure_channel(ACCOUNT_SERVICE_ADDRESS) as channel:
+        with grpc.insecure_channel(TRANSACTION_SERVICE_URI) as channel:
             stub = account_pb2_grpc.AccountAPIServiceStub(channel)
             try:
                 response = stub.CreateAccount(
@@ -39,7 +39,7 @@ class TransactionAPIService(transaction_pb2_grpc.TransactionAPIServiceServicer):
                 return transaction_pb2.CreateAccountResponse()
 
     def GetAccountBalance(self, request, context):
-        with grpc.insecure_channel(ACCOUNT_SERVICE_ADDRESS) as channel:
+        with grpc.insecure_channel(TRANSACTION_SERVICE_URI) as channel:
             stub = account_pb2_grpc.AccountAPIServiceStub(channel)
             try:
                 response = stub.GetAccountBalance(
