@@ -17,11 +17,3 @@ module "networking" {
   private_subnets = ["10.0.3.0/24", "10.0.4.0/24"]
   name            = "rpc-network"
 }
-
-# module "node_role_arn" {
-#   source          = "./modules/eks"
-#   cluster_name    = "rpc-eks-cluster"
-#   vpc_id          = module.networking.vpc_id
-#   subnets         = module.networking.private_subnets
-#   security_groups = [] # Agrega los grupos de seguridad necesarios
-# }
