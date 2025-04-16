@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  account-service:
+    build:
+      context: ./account-service
+      dockerfile: Dockerfile
+    container_name: account-service
+    ports:
+      - "50052:50052"
+    environment:
+      - GRPC_PORT=0.0.0.0:50052
+      - TRANSACTION_SERVICE_HOST=transaction-service
+      - TRANSACTION_SERVICE_PORT=50053
+    depends_on:
+      - transaction-service
+    networks:
+      - cloud-network
+
+  transaction-service:
+    build:
+      context: ./transaction-service
+      dockerfile: Dockerfile
+    container_name: transaction-service
+    ports:
+      - "50053:50053"
+    environment:
+      - GRPC_PORT=0.0.0.0:50053
+      - ACCOUNT_SERVICE_HOST=account-service
+      - ACCOUNT_SERVICE_PORT=50052
+    networks:
+      - cloud-network
+
+networks:
+  cloud-network:
+    driver: bridge
