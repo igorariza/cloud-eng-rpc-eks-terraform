@@ -83,6 +83,7 @@ cluster_name = "cloud-eng-rpc-eks-terraform"
 ```
 ### 4. Apply Terraform Configuration
 ```bash
+terraform plan
 terraform apply
 ```
 - Review the plan and type `yes` to proceed with the deployment.
@@ -96,13 +97,13 @@ aws eks --region us-east-1 update-kubeconfig --name cloud-eng-rpc-eks-terraform
 ### 7. Verify Deployment
 - Check the status of the pods:
 ```bash
-kubectl get pods
+kubectl get pods -n develop
 ```
 ### port-forwarding services
 - To access the services locally, you can use port forwarding:
 ```bash
-kubectl port-forward -n default service/banking-service 50052:50051
-kubectl port-forward -n default service/transaction-service 50053:50051
+kubectl port-forward -n develop service/banking-service 50052:50051
+kubectl port-forward -n develop service/transaction-service 50053:50051
 ```
 - Access the services in your browser:
   - Account Service: `http://localhost:50052`
