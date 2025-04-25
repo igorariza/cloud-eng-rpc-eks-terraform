@@ -3,13 +3,11 @@ provider "aws" {
 }
 
 
-# Security group for EKS control plane
 resource "aws_security_group" "eks_control_plane" {
   name        = "${var.cluster_name}-eks-control-plane-sg"
   description = "Security group for EKS control plane"
   vpc_id      = var.vpc_id
 
-  # Allow inbound traffic on port 443 from worker nodes
   ingress {
     from_port       = 443
     to_port         = 443
@@ -17,7 +15,6 @@ resource "aws_security_group" "eks_control_plane" {
     security_groups = [aws_security_group.eks_worker_nodes.id]
   }
 
-  # Allow all outbound traffic
   egress {
     from_port   = 0
     to_port     = 0
@@ -26,13 +23,11 @@ resource "aws_security_group" "eks_control_plane" {
   }
 }
 
-# Security group for EKS worker nodes
 resource "aws_security_group" "eks_worker_nodes" {
   name        = "${var.cluster_name}-eks-worker-nodes-sg"
   description = "Security group for EKS worker nodes"
   vpc_id      = var.vpc_id
 
-  # Allow all inbound traffic from the control plane
   ingress {
     from_port       = 0
     to_port         = 0
@@ -40,7 +35,6 @@ resource "aws_security_group" "eks_worker_nodes" {
     security_groups = [aws_security_group.eks_control_plane.id]
   }
 
-  # Allow all outbound traffic
   egress {
     from_port   = 0
     to_port     = 0
@@ -49,7 +43,6 @@ resource "aws_security_group" "eks_worker_nodes" {
   }
 }
 
-# EKS module configuration
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.0.0"
@@ -59,10 +52,6 @@ module "eks" {
   vpc_id          = var.vpc_id
   subnet_ids      = var.subnets
   
-
-  # Remove map_users and manage user access via aws-auth ConfigMap
-
-  # Pass security groups to the EKS module
   cluster_security_group_id = aws_security_group.eks_control_plane.id
 
   eks_managed_node_groups = {
@@ -91,7 +80,7 @@ resource "kubernetes_manifest" "iariza_admin_binding" {
     }
     subjects = [{
       kind      = "User"
-      name      = "arn:aws:iam::147997139534:user/iariza" # Replace with your IAM user ARN
+      name      = "arn:aws:iam::147997139534:user/iariza"
       apiGroup  = "rbac.authorization.k8s.io"
     }]
     roleRef = {

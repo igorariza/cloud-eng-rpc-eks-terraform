@@ -31,3 +31,8 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::147997139534:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS"
   role       = aws_iam_role.eks_node_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "admin_access" {
+  policy_arn = "arn:aws:iam::147997139534:role/aws-service-role/eks.amazonaws.com/AmazonEKSClusterAdminPolicy"
+  role       = aws_iam_role.eks_node_role.name
+}
